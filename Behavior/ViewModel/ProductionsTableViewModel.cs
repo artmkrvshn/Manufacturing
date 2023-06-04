@@ -1,22 +1,23 @@
-﻿using Behavior.Command;
+﻿using System.Windows.Input;
+using Behavior.Command;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DomainModel;
-using System.Windows.Input;
 using DomainModel.Tables;
 
 namespace Behavior.ViewModel;
 
-public class ProductionsTableViewModel : BaseViewModel
+public partial class ProductionsTableViewModel : ObservableObject
 {
-    private Production? _selectedProduction;
+    [ObservableProperty] private Production? _selectedProduction;
 
-    public Production? SelectedProduction
+    public ProductionsTableViewModel()
     {
-        get => _selectedProduction;
-        set => SetProperty(ref _selectedProduction, value);
+        AddCommand = new RelayCommand(_ => CanAddRow(), _ => AddRow());
+        RemoveCommand = new RelayCommand(_ => CanRemoveRow(), _ => RemoveRow());
     }
 
     public ProductionList Productions { get; } = Storage.Instance.Productions;
-    
+
     public WorkshopList Workshops { get; } = Storage.Instance.Workshops;
 
     public DetailList Details { get; } = Storage.Instance.Details;
@@ -24,12 +25,6 @@ public class ProductionsTableViewModel : BaseViewModel
     public ICommand AddCommand { get; }
 
     public ICommand RemoveCommand { get; }
-
-    public ProductionsTableViewModel()
-    {
-        AddCommand = new RelayCommand(_ => CanAddRow(), _ => AddRow());
-        RemoveCommand = new RelayCommand(_ => CanRemoveRow(), _ => RemoveRow());
-    }
 
     private bool CanAddRow() => Workshops.Count > 0 && Details.Count > 0;
 

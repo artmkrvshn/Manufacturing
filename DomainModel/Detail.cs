@@ -1,15 +1,14 @@
 using System;
 using System.Text.RegularExpressions;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DomainModel;
 
-public class Detail
+public partial class Detail : ObservableObject
 {
     private static uint _counter = 1;
 
     private string _id = $"{DateTime.Today.Day:00}.{DateTime.Today.Month:00}.{_counter++:00}";
-
-    private double _weightKg = 0.0;
 
     public string Id
     {
@@ -24,17 +23,9 @@ public class Detail
         }
     }
 
-    public string Name { get; set; } = string.Empty;
+    [ObservableProperty] private string _name = string.Empty;
 
-    public string AlloyGrade { get; set; } = string.Empty;
+    [ObservableProperty] private double _weightKg = 0.0;
 
-    public double WeightKg
-    {
-        get => _weightKg;
-        set
-        {
-            if (value <= 0) return;
-            _weightKg = value;
-        }
-    }
+    [ObservableProperty] private string _alloyGrade = string.Empty;
 }

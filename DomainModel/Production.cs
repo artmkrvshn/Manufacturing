@@ -1,28 +1,23 @@
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DomainModel;
 
-public class Production : BaseModel
+public partial class Production : ObservableObject
 {
-    private string _detailId = "00.00.00";
+    [ObservableProperty] private double _cost;
 
-    private uint _workshopId = 0;
+    [ObservableProperty] private string _detailId = "00.00.00";
 
-    private double _cost = 0.0;
+    [ObservableProperty] private uint _durationInHours;
 
-    private uint _durationInHours = 0;
+    [ObservableProperty] private uint _operationNumber = 1;
 
-    private uint _operationNumber = 1;
-
-    public string DetailId
-    {
-        get => _detailId;
-        set => SetField(ref _detailId, value);
-    }
+    [ObservableProperty] private uint _workshopId;
 
     public Detail? Detail
     {
-        get => Storage.Instance.Details.ToList().Find(d => d.Id.Equals(_detailId));
+        get => Storage.Instance.Details.ToList().Find(d => d.Id.Equals(DetailId));
         set
         {
             if (value != null)
@@ -30,37 +25,13 @@ public class Production : BaseModel
         }
     }
 
-    public uint WorkshopId
-    {
-        get => _workshopId;
-        set => SetField(ref _workshopId, value);
-    }
-
     public Workshop? Workshop
     {
-        get => Storage.Instance.Workshops.ToList().Find(w => w.Id.Equals(_workshopId));
+        get => Storage.Instance.Workshops.ToList().Find(w => w.Id.Equals(WorkshopId));
         set
         {
             if (value != null)
                 WorkshopId = value.Id;
         }
-    }
-
-    public double Cost
-    {
-        get => _cost;
-        set => SetField(ref _cost, value);
-    }
-
-    public uint DurationInHours
-    {
-        get => _durationInHours;
-        set => SetField(ref _durationInHours, value);
-    }
-
-    public uint OperationNumber
-    {
-        get => _operationNumber;
-        set => SetField(ref _operationNumber, value);
     }
 }

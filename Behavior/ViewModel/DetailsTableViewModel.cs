@@ -1,18 +1,19 @@
 ﻿using System.Windows.Input;
 using Behavior.Command;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DomainModel;
 using DomainModel.Tables;
 
 namespace Behavior.ViewModel;
 
-public class DetailsTableViewModel : BaseViewModel
+public partial class DetailsTableViewModel : ObservableObject
 {
-    private Detail? _selectedDetail;
+    [ObservableProperty] private Detail? _selectedDetail;
 
-    public Detail? SelectedDetail
+    public DetailsTableViewModel()
     {
-        get => _selectedDetail;
-        set => SetProperty(ref _selectedDetail, value);
+        AddCommand = new RelayCommand(_ => CanAddRow(), _ => AddRow());
+        RemoveCommand = new RelayCommand(_ => CanRemoveRow(), _ => RemoveRow());
     }
 
     public DetailList Details { get; } = Storage.Instance.Details;
@@ -20,12 +21,6 @@ public class DetailsTableViewModel : BaseViewModel
     public ICommand AddCommand { get; }
 
     public ICommand RemoveCommand { get; }
-
-    public DetailsTableViewModel()
-    {
-        AddCommand = new RelayCommand(_ => CanAddRow(), _ => AddRow());
-        RemoveCommand = new RelayCommand(_ => CanRemoveRow(), _ => RemoveRow());
-    }
 
     private bool CanAddRow() => true;
 

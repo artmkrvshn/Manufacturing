@@ -1,12 +1,14 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace DomainModel;
 
-public class Workshop
+public partial class Workshop : ObservableObject
 {
     private static uint _counter = 1;
 
-    public uint Id { get; } = _counter++;
+    [ObservableProperty] private string _headsNameSurname = string.Empty;
 
-    public string Name { get; set; } = string.Empty;
+    [ObservableProperty] private uint _id = _counter++;
 
-    public string HeadsNameSurname { get; set; } = string.Empty;
+    [ObservableProperty] private string _name = string.Empty;
 }

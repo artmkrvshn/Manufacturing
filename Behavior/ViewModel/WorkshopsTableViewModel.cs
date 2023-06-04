@@ -1,31 +1,26 @@
-﻿using Behavior.Command;
-using DomainModel.Tables;
+﻿using System.Windows.Input;
+using Behavior.Command;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DomainModel;
-using System.Windows.Input;
+using DomainModel.Tables;
 
 namespace Behavior.ViewModel;
 
-public class WorkshopsTableViewModel : BaseViewModel
+public partial class WorkshopsTableViewModel : ObservableObject
 {
-    private Workshop? _selectedWorkshop;
-
-    public Workshop? SelectedWorkshop
-    {
-        get => _selectedWorkshop;
-        set => SetProperty(ref _selectedWorkshop, value);
-    }
-
-    public WorkshopList Workshops { get; } = Storage.Instance.Workshops;
-    
-    public ICommand AddCommand { get; }
-
-    public ICommand RemoveCommand { get; }
+    [ObservableProperty] private Workshop? _selectedWorkshop;
 
     public WorkshopsTableViewModel()
     {
         AddCommand = new RelayCommand(_ => CanAddRow(), _ => AddRow());
         RemoveCommand = new RelayCommand(_ => CanRemoveRow(), _ => RemoveRow());
     }
+
+    public WorkshopList Workshops { get; } = Storage.Instance.Workshops;
+
+    public ICommand AddCommand { get; }
+
+    public ICommand RemoveCommand { get; }
 
     private bool CanAddRow() => true;
 
